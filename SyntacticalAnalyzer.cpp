@@ -12,7 +12,6 @@
 #include <iostream>
 #include <iomanip>
 #include <fstream>
-#include "CodeGenerator.h"
 #include "SyntacticalAnalyzer.h"
 #include <map>
 #include <set>
@@ -23,17 +22,19 @@ using namespace std;
 SyntacticalAnalyzer::SyntacticalAnalyzer (char * filename)
 {
     lex = new LexicalAnalyzer (filename);
+    string nameOfFile = filename;
+
+    cg = new CodeGen (nameOfFile);
     token_type t;
 
     //set up output p2 file
-    string nameOfFile = filename;
     string p2name = nameOfFile.substr (0, nameOfFile.length()-3) + ".p2";
     P2.open(p2name);
 
     //set up output debug file
     string debug2name = nameOfFile.substr (0, nameOfFile.length()-3) + ".dbg";
     debug2.open(debug2name);
-
+    code = "";
     int totalErrors = program ();
 }
 
@@ -123,6 +124,7 @@ int SyntacticalAnalyzer::more_defines (){
 
     if(token == DEFINE_T){
             P2 << "using Rule 2" << endl;
+            code+="Object ";
             debug2 << lex->GetTokenName(token) << " " << lex -> GetLexeme()<<endl;
 
             errors += define();
@@ -193,6 +195,8 @@ int SyntacticalAnalyzer::define (){
     }
 
     if(token == IDENT_T){
+        code += lex->GetTokenName(token) + " ()\n";
+        cg->WriteCode(0, code);
         debug2 << lex->GetTokenName(token) << " " << lex -> GetLexeme()<<endl;
            token = lex->GetToken();
     }

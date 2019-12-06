@@ -11,20 +11,23 @@
 
 #include <iostream>
 #include <fstream>
+#include "CodeGenerator.h"
 #include "LexicalAnalyzer.h"
 
 using namespace std;
 
-class SyntacticalAnalyzer 
+class SyntacticalAnalyzer
 {
     public:
 	SyntacticalAnalyzer (char * filename);
 	~SyntacticalAnalyzer ();
     private:
 	LexicalAnalyzer * lex;
+  CodeGen * cg;
 	token_type token;
-	ofstream debug2; 
-	ofstream P2; 
+	ofstream debug2;
+	ofstream P2;
+  string code;
 	int program ();
 	int more_defines ();
 	int define ();
@@ -40,5 +43,5 @@ class SyntacticalAnalyzer
 	int action ();
 	int any_other_token ();
 };
-	
+
 #endif

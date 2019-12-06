@@ -1,5 +1,5 @@
-P2.out : Project2.o SetLimits.o LexicalAnalyzer.o SyntacticalAnalyzer.o
-	g++ -g -o P2.out Project2.o SetLimits.o LexicalAnalyzer.o SyntacticalAnalyzer.o
+P3.out : Project2.o SetLimits.o LexicalAnalyzer.o SyntacticalAnalyzer.o CodeGenerator.o
+	g++ -g -o P2.out Project2.o SetLimits.o LexicalAnalyzer.o SyntacticalAnalyzer.o CodeGenerator.o
 
 Project2.o : Project2.cpp SetLimits.h SyntacticalAnalyzer.h
 	g++ -g -c Project2.cpp
@@ -7,10 +7,13 @@ Project2.o : Project2.cpp SetLimits.h SyntacticalAnalyzer.h
 SetLimits.o : SetLimits.cpp SetLimits.h
 	g++ -g -c SetLimits.cpp
 
+CodeGenerator.o : CodeGenerator.cpp CodeGenerator.h
+	g++ -g -c CodeGenerator.cpp
+
 SyntacticalAnalyzer.o : SyntacticalAnalyzer.cpp SyntacticalAnalyzer.h LexicalAnalyzer.h
 	g++ -g -c SyntacticalAnalyzer.cpp
 
-clean : 
+clean :
 	rm [SP]*.o P2.out *.gch
 
 submit : Project2.cpp LexicalAnalyzer.h SyntacticalAnalyzer.h SyntacticalAnalyzer.cpp makefile README.txt
