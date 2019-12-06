@@ -1,0 +1,321 @@
+DEFINE_T define
+DEFINE_T define
+LPAREN_T (
+IDENT_T funky
+IDENT_T v
+IDENT_T ls
+RPAREN_T )
+RPAREN_T )
+LPAREN_T (
+COND_T cond
+LPAREN_T
+LPAREN_T (
+LTE_T <=
+IDENT_T v
+IDENT_T v
+NUMLIT_T 10
+NUMLIT_T 10
+NUMLIT_T 10
+LPAREN_T (
+LPAREN_T (
+IF_T
+LPAREN_T (
+GT_T >
+IDENT_T v
+IDENT_T v
+NUMLIT_T 5
+NUMLIT_T 5
+NUMLIT_T 5
+LPAREN_T (
+LPAREN_T (
+MULT_T *
+LPAREN_T (
+LPAREN_T (
+PLUS_T +
+IDENT_T v
+IDENT_T v
+LPAREN_T (
+LPAREN_T (
+LPAREN_T (
+MINUS_T -
+IDENT_T v
+RPAREN_T )
+LPAREN_T (
+LPAREN_T (
+LPAREN_T (
+ROUND_T round
+LPAREN_T (
+DIV_T /
+IDENT_T v
+LPAREN_T (
+LPAREN_T (
+MODULO_T modulo
+IDENT_T v
+NUMLIT_T 3
+NUMLIT_T 3
+RPAREN_T )
+RPAREN_T )
+RPAREN_T )
+RPAREN_T )
+LPAREN_T
+LPAREN_T
+LPAREN_T
+LPAREN_T (
+EQUALTO_T =
+IDENT_T v
+IDENT_T v
+NUMLIT_T 11
+NUMLIT_T 11
+NUMLIT_T 11
+LPAREN_T (
+LPAREN_T (
+LISTOP2_T cons
+IDENT_T v
+IDENT_T ls
+RPAREN_T )
+LPAREN_T
+LPAREN_T
+LPAREN_T
+LPAREN_T (
+LT_T <
+IDENT_T v
+IDENT_T v
+NUMLIT_T 13
+NUMLIT_T 13
+NUMLIT_T 13
+LPAREN_T (
+LPAREN_T (
+LISTOP1_T cdar
+IDENT_T ls
+RPAREN_T )
+LPAREN_T
+LPAREN_T
+LPAREN_T
+LPAREN_T (
+OR_T or
+LPAREN_T (
+LPAREN_T (
+NUMBERP_T number?
+IDENT_T v
+LPAREN_T (
+LPAREN_T (
+LPAREN_T (
+LISTP_T list?
+IDENT_T ls
+LPAREN_T (
+LPAREN_T (
+LPAREN_T (
+ZEROP_T zero?
+IDENT_T v
+LPAREN_T (
+LPAREN_T (
+LPAREN_T (
+STRINGP_T string?
+IDENT_T v
+RPAREN_T )
+IDENT_T v
+IDENT_T v
+LPAREN_T
+LPAREN_T
+ELSE_T
+LPAREN_T (
+COND_T cond
+LPAREN_T
+LPAREN_T (
+NULLP_T null?
+IDENT_T ls
+STRLIT_T "empty"
+STRLIT_T "empty"
+STRLIT_T "empty"
+RPAREN_T
+RPAREN_T
+RPAREN_T )
+RPAREN_T
+RPAREN_T )
+RPAREN_T )
+DEFINE_T define
+DEFINE_T define
+DEFINE_T define
+LPAREN_T (
+IDENT_T main
+RPAREN_T )
+RPAREN_T )
+LPAREN_T (
+IF_T
+LPAREN_T (
+AND_T and
+LPAREN_T (
+LPAREN_T (
+GTE_T >=
+NUMLIT_T 7
+NUMLIT_T 7
+NUMLIT_T 7
+NUMLIT_T 5
+NUMLIT_T 5
+NUMLIT_T 5
+LPAREN_T (
+LPAREN_T (
+LPAREN_T (
+NOT_T not
+LPAREN_T (
+GTE_T >=
+NUMLIT_T 5
+NUMLIT_T 5
+NUMLIT_T 5
+NUMLIT_T 7
+NUMLIT_T 7
+NUMLIT_T 7
+RPAREN_T )
+RPAREN_T )
+LPAREN_T (
+LPAREN_T (
+DISPLAY_T display
+LPAREN_T (
+IDENT_T funky
+NUMLIT_T 5
+NUMLIT_T 5
+NUMLIT_T 5
+SQUOTE_T '
+SQUOTE_T '
+SQUOTE_T '
+LPAREN_T (
+LPAREN_T (
+IDENT_T a
+IDENT_T a
+NUMLIT_T 5
+NUMLIT_T 5
+STRLIT_T "hello world"
+STRLIT_T "hello world"
+LISTOP2_T cons
+LISTOP2_T cons
+IF_T if
+IF_T if
+DISPLAY_T display
+DISPLAY_T display
+NEWLINE_T newline
+NEWLINE_T newline
+LISTOP1_T cadr
+LISTOP1_T cadr
+AND_T and
+AND_T and
+OR_T or
+OR_T or
+NOT_T not
+NOT_T not
+DEFINE_T define
+DEFINE_T define
+NUMBERP_T number?
+NUMBERP_T number?
+LISTP_T list?
+LISTP_T list?
+ZEROP_T zero?
+ZEROP_T zero?
+NULLP_T null?
+NULLP_T null?
+STRINGP_T string?
+STRINGP_T string?
+PLUS_T +
+PLUS_T +
+MINUS_T -
+MINUS_T -
+DIV_T /
+DIV_T /
+MULT_T *
+MULT_T *
+MODULO_T modulo
+MODULO_T modulo
+ROUND_T round
+ROUND_T round
+EQUALTO_T =
+EQUALTO_T =
+GT_T >
+GT_T >
+LT_T <
+LT_T <
+GTE_T >=
+GTE_T >=
+LTE_T <=
+LTE_T <=
+SQUOTE_T '
+SQUOTE_T '
+COND_T cond
+ELSE_T else
+ELSE_T else
+RPAREN_T )
+RPAREN_T )
+RPAREN_T )
+RPAREN_T )
+RPAREN_T )
+LPAREN_T (
+LPAREN_T (
+LPAREN_T (
+NEWLINE_T newline
+RPAREN_T )
+RPAREN_T )
+LPAREN_T (
+IDENT_T main
+RPAREN_T )
+  )
+	RPAREN_T        )
+	RPAREN_T        )
+  16: 		(display (funky 5 '(a 5 "hello world" cons if display
+	LPAREN_T        (
+	DISPLAY_T       display
+	LPAREN_T        (
+	IDENT_T         funky
+	NUMLIT_T        5
+	SQUOTE_T        '
+	LPAREN_T        (
+	IDENT_T         a
+	NUMLIT_T        5
+	STRLIT_T        "hello world"
+	LISTOP2_T       cons
+	IF_T            if
+	DISPLAY_T       display
+  17: 			    newline cadr and or not define 
+	NEWLINE_T       newline
+	LISTOP1_T       cadr
+	AND_T           and
+	OR_T            or
+	NOT_T           not
+	DEFINE_T        define
+  18: 			    number? list? zero? null?
+	NUMBERP_T       number?
+	LISTP_T         list?
+	ZEROP_T         zero?
+	NULLP_T         null?
+  19: 			    string? + - / * modulo round = > < >=
+	STRINGP_T       string?
+	PLUS_T          +
+	MINUS_T         -
+	DIV_T           /
+	MULT_T          *
+	MODULO_T        modulo
+	ROUND_T         round
+	EQUALTO_T       =
+	GT_T            >
+	LT_T            <
+	GTE_T           >=
+  20: 			    <= 'cond else)))
+	LTE_T           <=
+	SQUOTE_T        '
+	COND_T          cond
+	ELSE_T          else
+	RPAREN_T        )
+	RPAREN_T        )
+	RPAREN_T        )
+  21: 	)
+	RPAREN_T        )
+  22: 	(newline)
+	LPAREN_T        (
+	NEWLINE_T       newline
+	RPAREN_T        )
+  23: )
+	RPAREN_T        )
+  24: 
+  25: (main)
+	LPAREN_T        (
+	IDENT_T         main
+	RPAREN_T        )
+	EOF_T           
+0 errors found in input file
