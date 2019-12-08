@@ -28,6 +28,8 @@ class SyntacticalAnalyzer
 	ofstream debug2;
 	ofstream P2;
   string code;
+  int tabs;
+  int params;
 	int program ();
 	int more_defines ();
 	int define ();
