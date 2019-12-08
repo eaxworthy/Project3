@@ -6,3 +6,4 @@
 	(display (+ "abc" 5))
 	(newline)
 )
+(main)
