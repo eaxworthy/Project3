@@ -392,9 +392,10 @@ int SyntacticalAnalyzer::literal (){
     P2 << "Using Rule 12" << endl;
     debug2 << lex->GetTokenName(token) << " " << lex -> GetLexeme()<<endl;
     token = lex->GetToken();
-    code += "Object(";
+    code += "Object(\"";
     errors+= quoted_lit();
-    code += ")";
+    code.erase(code.end()-2);
+    code += "\")";
   }
   else{
     errors ++;
@@ -932,7 +933,7 @@ int SyntacticalAnalyzer::action (){
 int SyntacticalAnalyzer::any_other_token (){
 
   int errors = 0;
-
+  code += lex->GetLexeme()+ " ";
   set<token_type> first = { LISTOP1_T, LISTOP2_T, IF_T, COND_T,AND_T, OR_T, NOT_T, NUMBERP_T, LISTP_T, ZEROP_T, NULLP_T, STRINGP_T, PLUS_T, MINUS_T, DIV_T, MULT_T, MODULO_T, ROUND_T, EQUALTO_T, GT_T, LT_T, GTE_T, LTE_T, IDENT_T, DISPLAY_T, NEWLINE_T, LPAREN_T, NUMLIT_T, STRLIT_T, DEFINE_T, SQUOTE_T, ELSE_T};
 
 
@@ -944,9 +945,9 @@ int SyntacticalAnalyzer::any_other_token (){
     P2 << "Using Rule 50" << endl;
     debug2 << lex->GetTokenName(token) << " " << lex -> GetLexeme()<<endl;
     token = lex->GetToken();
-
+    code.pop_back();
     errors += more_tokens();
-
+    code += lex->GetLexeme();
     if(token == RPAREN_T){
       token = lex->GetToken();
       debug2 << lex->GetTokenName(token) << " " << lex -> GetLexeme()<<endl;
