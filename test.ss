@@ -1,3 +1,7 @@
+(define (test ls ls2)
+	(test)
+)
+
 (define (main)
 	(display (+ 12 5))
 	(newline)

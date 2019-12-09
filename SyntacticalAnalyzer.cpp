@@ -1,8 +1,10 @@
 /*******************************************************************************
-* File name: SyntacticalAnalyzer.cpp                                           *         *
-* Project: CS 460 Project 2 Fall 2019                                          *           *
+* File name: SyntacticalAnalyzer.cpp                                           *
+* Project: CS 460 Project 2 Fall 2019                                          *
 * Author(s): Haley Psomas-Sheridan, Gleb Krunchinin, Alexandria Labossiere     *
-* Date: 11/29/19                                                               *                          *
+*            [Modifications by Elizabeth Axworthy, Alexandria Labossiere]      *
+*             and Roberto Rojas for Project 3                                  *
+* Date: 12/12/19                                                               *
 * Description: This file contains code for all the functions provided          *
 * in  SyntacticalAnalyzer.h. Outputs rules to a file named                     *
 * <input filename>.p2  outputs all error messages to                           *
@@ -35,6 +37,8 @@ SyntacticalAnalyzer::SyntacticalAnalyzer (char * filename)
   string debug2name = nameOfFile.substr (0, nameOfFile.length()-3) + ".dbg";
   debug2.open(debug2name);
   code = "";
+  op = "";
+  returnstmt = "";
   tabs = 0;
   params = 0;
   int totalErrors = program ();
@@ -197,9 +201,11 @@ int SyntacticalAnalyzer::define (){
   if(token == IDENT_T){
     if(lex->GetLexeme().compare("main") == 0){
       code += "int main(";
+      returnstmt = "\treturn 0;\n";
     }
     else{
       code += "Object " + lex->GetLexeme() + "(";
+      returnstmt = "\treturn __RetVal;\n";
     }
     debug2 << lex->GetTokenName(token) << " " << lex -> GetLexeme()<<endl;
     token = lex->GetToken();
@@ -214,7 +220,7 @@ int SyntacticalAnalyzer::define (){
   errors += param_list();
   params = 0;
   cg->WriteCode(tabs, code);
-  code = "{\n";
+  code = "{\n\tObject __RetVal;\n";
   cg->WriteCode(tabs++, code);
   code = "";
   if(token == RPAREN_T){
@@ -239,6 +245,7 @@ int SyntacticalAnalyzer::define (){
     errors++;
     lex-> ReportError("unexpected '" + lex->GetLexeme() + "'");
   }
+  cg->WriteCode(--tabs, returnstmt + "}\n");
   return errors;
 }
 
@@ -264,30 +271,33 @@ int SyntacticalAnalyzer::stmt_list (){
     token = lex->GetToken();
   }
 
-  if(token == RPAREN_T){//<stmt_list> -> {}
-  P2 << "Using Rule 6" << endl;
+  if(token == RPAREN_T){
+    P2 << "Using Rule 6" << endl;
+    return errors;
+  }
+  else if(first.find(token) != first.end()){
+    P2 << "Using Rule 5" << endl;
+    debug2 << lex->GetTokenName(token) << " " << lex -> GetLexeme()<<endl;
+
+    errors += stmt();
+    if(op.compare("") != 0){
+      code += op;
+      op = "";
+    }
+    errors += stmt_list();
+
+  }
+  else{
+    errors++;
+    lex-> ReportError("unexpected '" + lex->GetLexeme() + "'");
+    debug2 << "Error in stmt_list: expecting RPARENT_T or something in stmt got: " << lex->GetTokenName(token) << endl;
+  }
   return errors;
 }
-else if(first.find(token) != first.end()){ // <stmt_list> -> <stmt> <stmt_list>
-  P2 << "Using Rule 5" << endl;
-  debug2 << lex->GetTokenName(token) << " " << lex -> GetLexeme()<<endl;
-
-  errors += stmt();
-  errors += stmt_list();
-}
-else{
-  errors++;
-  lex-> ReportError("unexpected '" + lex->GetLexeme() + "'");
-  debug2 << "Error in stmt_list: expecting RPARENT_T or something in stmt got: " << lex->GetTokenName(token) << endl;
-}
-
-return errors;
-}
 
 
-// 7    <stmt> -> <literal>
-// 8    <stmt> -> IDENT_T
-// 9    <stmt> -> LPAREN_T <action> RPAREN_T
+// We enter stmt with some variable prewritten to code that we will be adding to
+// so don't have '\n' and the beginning of the string you add to code.
 int SyntacticalAnalyzer::stmt (){
 
   int errors = 0;
@@ -311,22 +321,19 @@ int SyntacticalAnalyzer::stmt (){
   if(token == NUMLIT_T || token == STRLIT_T || token == SQUOTE_T){ //7  <stmt> -> <literal>
     P2 << "Using Rule 7" << endl;
     debug2 << lex->GetTokenName(token) <<" " << lex -> GetLexeme()<< endl;
-
     errors += literal();
   }
-  else if(token == IDENT_T){//8  <stmt> -> IDENT_T
+  else if(token == IDENT_T){
     P2 << "Using Rule 8" << endl;
     code += lex->GetLexeme() + " ";
     debug2 << lex->GetTokenName(token) << " " << lex -> GetLexeme()<<endl;
     token = lex->GetToken();
   }
-  else if(token == LPAREN_T){//9  <stmt> -> LPAREN_T <action> RPAREN_T
+  else if(token == LPAREN_T){
     P2 << "Using Rule 9" << endl;
     debug2 << lex->GetTokenName(token) << " " << lex -> GetLexeme()<<endl;
     token = lex->GetToken();
-
     errors += action();
-
     if(token = RPAREN_T){
       token = lex->GetToken();
       debug2 << lex->GetTokenName(token) << " " << lex -> GetLexeme()<<endl;
@@ -341,7 +348,8 @@ int SyntacticalAnalyzer::stmt (){
     lex-> ReportError("unexpected " + lex->GetLexeme());
     debug2 << "Error in stmt: expecting LPARENT_T or IDENT_T, got: " << lex->GetTokenName(token) << endl;
   }
-
+  //cg->WriteCode(tabs, code);
+  //code = "";
   return errors;
 }
 
@@ -369,11 +377,14 @@ int SyntacticalAnalyzer::literal (){
   if(token == NUMLIT_T){//10  <literal> -> NUMLIT_T
     P2 << "Using Rule 10" << endl;
     debug2 << lex->GetTokenName(token) << " " << lex -> GetLexeme()<<endl;
+    code += lex->GetLexeme();
     token = lex->GetToken();
   }
+
   else if(token == STRLIT_T){ //11  <literal> -> STRLIT_T
     P2 << "Using Rule 11" << endl;
     debug2 << lex->GetTokenName(token) << " " << lex -> GetLexeme()<<endl;
+    code += lex->GetLexeme();
     token = lex->GetToken();
   }
 
@@ -393,7 +404,6 @@ int SyntacticalAnalyzer::literal (){
 
   return errors;
 }
-
 
 // 13  <quoted_lit> -> <any_other_token>
 int SyntacticalAnalyzer::quoted_lit (){
@@ -491,9 +501,9 @@ int SyntacticalAnalyzer::param_list (){
   if(token == IDENT_T){//16  <param_list> -> IDENT_T <param_list>
     P2 << "Using Rule 16" << endl;
     if(params)
-      code += ", Object " + lex->GetLexeme();
+    code += ", Object " + lex->GetLexeme();
     else
-      code += "Object " + lex->GetLexeme();
+    code += "Object " + lex->GetLexeme();
     debug2 << lex->GetTokenName(token) <<" " << lex -> GetLexeme()<< endl;
     token = lex->GetToken();
     params = 1;
@@ -513,7 +523,7 @@ int SyntacticalAnalyzer::param_list (){
     errors ++;
   }
 
-return errors;
+  return errors;
 }
 
 
@@ -652,33 +662,6 @@ int SyntacticalAnalyzer::stmt_pair_body (){
   return errors;
 }
 
-
-// 24    <action> -> IF_T <stmt> <stmt> <else_part>
-// 25    <action> -> COND_T LPAREN_T <stmt_pair_body>
-// 26    <action> -> LISTOP1_T <stmt>
-// 27    <action> -> LISTOP2_T <stmt> <stmt>
-// 28    <action> -> AND_T <stmt_list>
-// 29    <action> -> OR_T <stmt_list>
-// 30    <action> -> NOT_T <stmt>
-// 31    <action> -> NUMBERP_T <stmt>
-// 32    <action> -> LISTP_T <stmt>
-// 33    <action> -> ZEROP_T <stmt>
-// 34    <action> -> NULLP_T <stmt>
-// 35    <action> -> STRINGP_T <stmt>
-// 36    <action> -> PLUS_T <stmt_list>
-// 37    <action> -> MINUS_T <stmt> <stmt_list>
-// 38    <action> -> DIV_T <stmt> <stmt_list>
-// 39    <action> -> MULT_T <stmt_list>
-// 40    <action> -> MODULO_T <stmt> <stmt>
-// 41    <action> -> ROUND_T <stmt>
-// 42    <action> -> EQUALTO_T <stmt_list>
-// 43    <action> -> GT_T <stmt_list>
-// 44    <action> -> LT_T <stmt_list>
-// 45    <action> -> GTE_T <stmt_list>
-// 46    <action> -> LTE_T <stmt_list>
-// 47    <action> -> IDENT_T <stmt_list>
-// 48    <action> -> DISPLAY_T <stmt>
-// 49    <action> -> NEWLINE_T
 int SyntacticalAnalyzer::action (){
 
   int errors = 0;
@@ -689,14 +672,20 @@ int SyntacticalAnalyzer::action (){
 
   switch (token){
 
+    //Written, needs testing
     case IF_T://24 <action> -> IF_T <stmt> <stmt> <else_part>
     P2 << "Using Rule 24" << endl;
     debug2 << lex->GetTokenName(token) << endl;
     token = lex->GetToken();
-
+    code += "if(";
     errors += stmt();
+    code+= "){\n";
+    cg->WriteCode(tabs++, code);
     errors +=stmt();
+    cg->WriteCode(tabs-1, "}\nelse{\n");
+    code = "";
     errors += else_part();
+    cg->WriteCode(--tabs, "}\n");
     break;
 
     case COND_T: //25<action> -> COND_T LPAREN_T <stmt_pair_body>
@@ -751,7 +740,7 @@ int SyntacticalAnalyzer::action (){
     P2 << "Using Rule 30" << endl;
     debug2 << lex->GetTokenName(token) << " " << lex -> GetLexeme()<<endl;
     token = lex-> GetToken();
-
+    code += " !(";
     errors += stmt();
     break;
 
@@ -795,47 +784,54 @@ int SyntacticalAnalyzer::action (){
     errors += stmt();
     break;
 
+    //Written, needs testing
     case PLUS_T: // 36    <action> -> PLUS_T <stmt_list>
     P2 << "Using Rule 36" << endl;
+    op = " + ";
     debug2 << lex->GetTokenName(token) << " " << lex -> GetLexeme()<<endl;
     token = lex-> GetToken();
-
     errors += stmt_list();
     break;
 
+    //Written, needs testing
     case MINUS_T: //37    <action> -> MINUS_T <stmt> <stmt_list>
     P2 << "Using Rule 37" << endl;
     debug2 << lex->GetTokenName(token) << " " << lex -> GetLexeme()<<endl;
     token = lex-> GetToken();
 
     errors+= stmt();
+    code += " - ";
     errors += stmt_list();
     break;
 
+    //Written, needs testing
     case DIV_T:// 38    <action> -> DIV_T <stmt> <stmt_list>
     P2 << "Using Rule 38" << endl;
     debug2 << lex->GetTokenName(token) << " " << lex -> GetLexeme()<<endl;
     token = lex-> GetToken();
 
     errors+= stmt();
+    code += " \\ ";
     errors+=stmt_list();
-
     break;
 
+    //Written, needs testing
     case MULT_T://39    <action> -> MULT_T <stmt_list>
     P2 << "Using Rule 39" << endl;
     debug2 << lex->GetTokenName(token) << " " << lex -> GetLexeme()<<endl;
     token = lex-> GetToken();
-
+    op = " * ";
     errors += stmt_list();
     break;
 
+    //Written, needs testing
     case MODULO_T:// 40    <action> -> MODULO_T <stmt> <stmt>
     P2 << "Using Rule 40" << endl;
     debug2 << lex->GetTokenName(token) << " " << lex -> GetLexeme()<<endl;
     token = lex-> GetToken();
 
     errors += stmt();
+    code += " % ";
     errors += stmt();
     break;
 
@@ -847,20 +843,24 @@ int SyntacticalAnalyzer::action (){
     errors += stmt();
     break;
 
+    //Written, needs testing
     case EQUALTO_T: //42 <action> -> EQUALTO_T <stmt_list>
     P2 << "Using Rule 42" << endl;
     debug2 << lex->GetTokenName(token) << " " << lex -> GetLexeme()<<endl;
     token = lex-> GetToken();
-
+    op = " == ";
     errors += stmt_list();
     break;
 
+    //Written, needs testing
     case GT_T:// 43    <action> -> GT_T <stmt_list>
     P2 << "Using Rule 43" << endl;
     debug2 << lex->GetTokenName(token) << " " << lex -> GetLexeme()<<endl;
     token = lex-> GetToken();
-
+    op = ">= ";
     errors += stmt_list();
+    op = "";
+    code = "";
     break;
 
     case LT_T:// 44    <action> -> LT_T <stmt_list>
@@ -895,18 +895,24 @@ int SyntacticalAnalyzer::action (){
     errors += stmt_list();
     break;
 
+    //Written, needs testing
     case DISPLAY_T:// 48    <action> -> DISPLAY_T <stmt>
     P2 << "Using Rule 48" << endl;
     debug2 << lex->GetTokenName(token) << " " << lex -> GetLexeme()<<endl;
     token = lex-> GetToken();
-
+    code += "cout << ";
     errors += stmt();
+    code += ";\n";
+    cg->WriteCode(tabs, code);
+    code = "";
     break;
 
     case NEWLINE_T: // 49    <action> -> NEWLINE_T
     P2 << "Using Rule 49" << endl;
     debug2 << lex->GetTokenName(token) << " " << lex -> GetLexeme()<<endl;
-
+    code = "cout << endl;\n";
+    cg->WriteCode(tabs, code);
+    code = "";
     token = lex-> GetToken();
     break;
 
@@ -918,40 +924,6 @@ int SyntacticalAnalyzer::action (){
   }
   return errors;
 }
-
-
-// 50    <any_other_token> -> LPAREN_T <more_tokens> RPAREN_T
-// 51    <any_other_token> -> IDENT_T
-// 52    <any_other_token> -> NUMLIT_T
-// 53    <any_other_token> -> STRLIT_T
-// 54    <any_other_token> -> CONS_T
-// 55    <any_other_token> -> IF_T
-// 56    <any_other_token> -> DISPLAY_T
-// 57    <any_other_token> -> NEWLINE_T
-// 58    <any_other_token> -> LISTOP_T
-// 59    <any_other_token> -> AND_T
-// 60    <any_other_token> -> OR_T
-// 61    <any_other_token> -> NOT_T
-// 62    <any_other_token> -> DEFINE_T
-// 63    <any_other_token> -> NUMBERP_T
-// 64    <any_other_token> -> LISTP_T
-// 65    <any_other_token> -> ZEROP_T
-// 66    <any_other_token> -> NULLP_T
-// 67    <any_other_token> -> STRINGP_T
-// 68    <any_other_token> -> PLUS_T
-// 69    <any_other_token> -> MINUS_T
-// 70    <any_other_token> -> DIV_T
-// 71    <any_other_token> -> MULT_T
-// 72    <any_other_token> -> MODULO_T
-// 73    <any_other_token> -> ROUND_T
-// 74    <any_other_token> -> EQUALTO_T
-// 75    <any_other_token> -> GT_T
-// 76    <any_other_token> -> LT_T
-// 77    <any_other_token> -> GTE_T
-// 78    <any_other_token> -> LTE_T
-// 79    <any_other_token> -> SQUOTE_T <any_other_token>
-// 80    <any_other_token> -> COND_T
-// 81    <any_other_token> -> ELSE_T
 
 int SyntacticalAnalyzer::any_other_token (){
 

@@ -1,11 +1,15 @@
 Input file: test.ss
-   1: (define (main)
-   2: 	(display (+ 12 5))
-   3: 	(newline)
-   4: 	(display (+ "abc" "xyz"))
-   5: 	(newline)
-   6: 	(display (+ "abc" 5))
+   1: (define (test ls ls2)
+   2: 	(test)
+   3: )
+   4: 
+   5: (define (main)
+   6: 	(display (+ 12 5))
    7: 	(newline)
-   8: )
-   9: (main)
+   8: 	(display (+ "abc" "xyz"))
+   9: 	(newline)
+  10: 	(display (+ "abc" 5))
+  11: 	(newline)
+  12: )
+  13: (main)
 0 errors found in input file

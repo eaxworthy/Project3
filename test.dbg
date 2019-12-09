@@ -1,6 +1,19 @@
 DEFINE_T define
 DEFINE_T define
 LPAREN_T (
+IDENT_T test
+IDENT_T ls
+IDENT_T ls2
+RPAREN_T )
+RPAREN_T )
+LPAREN_T (
+IDENT_T test
+RPAREN_T )
+RPAREN_T )
+DEFINE_T define
+DEFINE_T define
+DEFINE_T define
+LPAREN_T (
 IDENT_T main
 RPAREN_T )
 RPAREN_T )
@@ -55,23 +68,28 @@ LPAREN_T (
 NEWLINE_T newline
 RPAREN_T )
 RPAREN_T )
-IDENT_T main
+LPAREN_T (
 IDENT_T main
 RPAREN_T )
-  display
+_T        (
+	NEWLINE_T       newline
+	RPAREN_T        )
+  10: 	(display (+ "abc" 5))
+	LPAREN_T        (
+	DISPLAY_T       display
 	LPAREN_T        (
 	PLUS_T          +
 	STRLIT_T        "abc"
 	NUMLIT_T        5
 	RPAREN_T        )
 	RPAREN_T        )
-   7: 	(newline)
+  11: 	(newline)
 	LPAREN_T        (
 	NEWLINE_T       newline
 	RPAREN_T        )
-   8: )
+  12: )
 	RPAREN_T        )
-   9: (main)
+  13: (main)
 	LPAREN_T        (
 	IDENT_T         main
 	RPAREN_T        )

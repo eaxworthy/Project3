@@ -30,6 +30,8 @@ class SyntacticalAnalyzer
   string code;
   int tabs;
   int params;
+  string op;
+  string returnstmt;
 	int program ();
 	int more_defines ();
 	int define ();
