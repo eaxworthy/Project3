@@ -128,7 +128,6 @@ int SyntacticalAnalyzer::more_defines (){
 
   if(token == DEFINE_T){
     P2 << "using Rule 2" << endl;
-    code +="Object ";
     debug2 << lex->GetTokenName(token) << " " << lex -> GetLexeme()<<endl;
 
     errors += define();
@@ -246,6 +245,7 @@ int SyntacticalAnalyzer::define (){
     lex-> ReportError("unexpected '" + lex->GetLexeme() + "'");
   }
   cg->WriteCode(--tabs, returnstmt + "}\n");
+  code = "";
   return errors;
 }
 
@@ -374,17 +374,17 @@ int SyntacticalAnalyzer::literal (){
     token = lex->GetToken();
   }
 
-  if(token == NUMLIT_T){//10  <literal> -> NUMLIT_T
+  if(token == NUMLIT_T){
     P2 << "Using Rule 10" << endl;
     debug2 << lex->GetTokenName(token) << " " << lex -> GetLexeme()<<endl;
-    code += lex->GetLexeme();
+    code += "Object(" + lex->GetLexeme() + ")";
     token = lex->GetToken();
   }
 
   else if(token == STRLIT_T){ //11  <literal> -> STRLIT_T
     P2 << "Using Rule 11" << endl;
     debug2 << lex->GetTokenName(token) << " " << lex -> GetLexeme()<<endl;
-    code += lex->GetLexeme();
+    code += "Object(" + lex->GetLexeme() + ")";
     token = lex->GetToken();
   }
 
@@ -392,9 +392,9 @@ int SyntacticalAnalyzer::literal (){
     P2 << "Using Rule 12" << endl;
     debug2 << lex->GetTokenName(token) << " " << lex -> GetLexeme()<<endl;
     token = lex->GetToken();
-
+    code += "Object(";
     errors+= quoted_lit();
-
+    code += ")";
   }
   else{
     errors ++;
@@ -681,11 +681,13 @@ int SyntacticalAnalyzer::action (){
     errors += stmt();
     code+= "){\n";
     cg->WriteCode(tabs++, code);
+    code = "";
     errors +=stmt();
     cg->WriteCode(tabs-1, "}\nelse{\n");
     code = "";
     errors += else_part();
     cg->WriteCode(--tabs, "}\n");
+    code = "";
     break;
 
     case COND_T: //25<action> -> COND_T LPAREN_T <stmt_pair_body>
@@ -890,12 +892,14 @@ int SyntacticalAnalyzer::action (){
     case IDENT_T:// 47    <action> -> IDENT_T <stmt_list>
     P2  << "Using Rule 47" << endl;
     debug2 << lex->GetTokenName(token) << " " << lex -> GetLexeme()<<endl;
+    code += lex->GetLexeme() + '(';
     token = lex-> GetToken();
-
     errors += stmt_list();
+    code += ");\n";
+    cg->WriteCode(tabs, code);
+    code = "";
     break;
 
-    //Written, needs testing
     case DISPLAY_T:// 48    <action> -> DISPLAY_T <stmt>
     P2 << "Using Rule 48" << endl;
     debug2 << lex->GetTokenName(token) << " " << lex -> GetLexeme()<<endl;
@@ -907,7 +911,7 @@ int SyntacticalAnalyzer::action (){
     code = "";
     break;
 
-    case NEWLINE_T: // 49    <action> -> NEWLINE_T
+    case NEWLINE_T:
     P2 << "Using Rule 49" << endl;
     debug2 << lex->GetTokenName(token) << " " << lex -> GetLexeme()<<endl;
     code = "cout << endl;\n";
