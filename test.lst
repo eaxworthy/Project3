@@ -1,27 +1,15 @@
 Input file: test.ss
-   1: (define (funky v ls)
-   2: 	(cond 	((<= v 10)
-   3: 			(if (> v 5)
-   4: 				(* (+ v) (- v))
-   5: 				(round (/ v (modulo v 3)))
-   6: 			)) 
-   7: 		((= v 11) (cons v ls))
-   8: 		((< v 13) (cdar ls))
-   9: 		((or (number? v) (list? ls) (zero? v) (string? v)) v)
-  10: 		(else (cond ((null? ls) "empty")))
-  11: 	)
+   1: (define (test ls ls2)
+   2: 	(test)
+   3: )
+   4: 
+   5: (define (main)
+   6: 	(display (+ 12 5))
+   7: 	(newline)
+   8: 	(display (+ "abc" "xyz"))
+   9: 	(newline)
+  10: 	(display (+ "abc" 5))
+  11: 	(newline)
   12: )
-  13: 
-  14: (define (main)
-  15: 	(if (and (>= 7 5) (not (>= 5 7)))
-  16: 		(display (funky 5 '(a 5 "hello world" cons if display
-  17: 			    newline cadr and or not define 
-  18: 			    number? list? zero? null?
-  19: 			    string? + - / * modulo round = > < >=
-  20: 			    <= 'cond else)))
-  21: 	)
-  22: 	(newline)
-  23: )
-  24: 
-  25: (main)
+  13: (main)
 0 errors found in input file

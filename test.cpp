@@ -4,13 +4,17 @@
 #include "Object.h"
 using namespace std;
 
-int main ()
-{
-	cout << Object(12) + Object(5);
+Object test(Object ls, Object ls2){
+	Object __RetVal;
+	return __RetVal;
+}
+Object int main(){
+	Object __RetVal;
+	cout << 12 + 5;
 	cout << endl;
-	cout << Object("abc") + Object("xyz");
+	cout << "abc" + "xyz";
 	cout << endl;
-	cout << Object("abc") + Object(5);
+	cout << "abc" + 5;
 	cout << endl;
 	return 0;
 }
