@@ -135,6 +135,7 @@ int SyntacticalAnalyzer::more_defines (){
     if(token == LPAREN_T){
       debug2 << lex->GetTokenName(token) << " " << lex -> GetLexeme()<<endl;
       token = lex-> GetToken();
+      code += "__RetVal = ";
       errors += more_defines();
     }
     else{
@@ -231,9 +232,9 @@ int SyntacticalAnalyzer::define (){
     errors++;
     lex-> ReportError("unexpected '" + lex->GetLexeme() + "'");
   }
-
   errors += stmt();
   errors +=stmt_list();
+
 
   if(token == RPAREN_T){
     debug2 << lex->GetTokenName(token) << " " << lex -> GetLexeme()<<endl;
@@ -324,8 +325,9 @@ int SyntacticalAnalyzer::stmt (){
     errors += literal();
   }
   else if(token == IDENT_T){
+
     P2 << "Using Rule 8" << endl;
-    code += lex->GetLexeme() + " ";
+    code += lex->GetLexeme();
     debug2 << lex->GetTokenName(token) << " " << lex -> GetLexeme()<<endl;
     token = lex->GetToken();
   }
@@ -333,6 +335,8 @@ int SyntacticalAnalyzer::stmt (){
     P2 << "Using Rule 9" << endl;
     debug2 << lex->GetTokenName(token) << " " << lex -> GetLexeme()<<endl;
     token = lex->GetToken();
+    if(token == IDENT_T)
+      code += "__RetVal = ";
     errors += action();
     if(token = RPAREN_T){
       token = lex->GetToken();
@@ -682,11 +686,17 @@ int SyntacticalAnalyzer::action (){
     errors += stmt();
     code+= "){\n";
     cg->WriteCode(tabs++, code);
-    code = "";
+    code = "__RetVal = ";
     errors +=stmt();
-    cg->WriteCode(tabs-1, "}\nelse{\n");
-    code = "";
+    code += ";\n";
+
+    cg->WriteCode(tabs, code);
+    cg->WriteCode(--tabs, "}\n");
+    cg->WriteCode(tabs++, "else{\n");
+    code = "__RetVal = ";
     errors += else_part();
+    code += ";\n";
+    cg->WriteCode(tabs, code);
     cg->WriteCode(--tabs, "}\n");
     code = "";
     break;
@@ -710,140 +720,168 @@ int SyntacticalAnalyzer::action (){
     case LISTOP1_T://26  <action> -> LISTOP1_T <stmt>
     P2 << "Using Rule 26" << endl;
     debug2 << lex->GetTokenName(token) << " " << lex -> GetLexeme()<<endl;
+    code += "listop (\"" + lex->GetLexeme() + "\", ";
     token = lex-> GetToken();
     errors+= stmt();
+    code += ")";
     break;
 
     case LISTOP2_T:// 27 <action> -> LISTOP2_T <stmt> <stmt>
     P2 << "Using Rule 27" << endl;
     debug2 << lex->GetTokenName(token) << " " << lex -> GetLexeme()<<endl;
     token = lex-> GetToken();
-
+    code += "listop (" + lex->GetLexeme() + "\", ";
     errors = stmt();
     errors = stmt();
+    code += ")";
     break;
 
+    //needs testing
     case AND_T: //28    <action> -> AND_T <stmt_list>
     P2 << "Using Rule 28" << endl;
     debug2 << lex->GetTokenName(token) << " " << lex -> GetLexeme()<<endl;
     token = lex-> GetToken();
-
+    op = " && ";
     errors += stmt_list();
+    op = "";
     break;
 
+    //needs testing
     case OR_T://29    <action> -> OR_T <stmt_list>
     P2 << "Using Rule 29" << endl;
     debug2 << lex->GetTokenName(token) << " " << lex -> GetLexeme()<<endl;
     token = lex-> GetToken();
-
+    op = " || ";
     errors +=stmt_list();
+    op = "";
     break;
 
+    //needs testing
     case NOT_T: // 30    <action> -> NOT_T <stmt>
     P2 << "Using Rule 30" << endl;
     debug2 << lex->GetTokenName(token) << " " << lex -> GetLexeme()<<endl;
     token = lex-> GetToken();
     code += " !(";
     errors += stmt();
+    code += ")";
     break;
 
+    //done
     case NUMBERP_T:// 31    <action> -> NUMBERP_T <stmt>
     P2 << "Using Rule 31" << endl;
     debug2 << lex->GetTokenName(token) << " " << lex -> GetLexeme()<<endl;
     token = lex-> GetToken();
-
+    code += "numberp (";
     errors += stmt();
+    code += ")";
     break;
 
+    //done
     case LISTP_T://32    <action> -> LISTP_T <stmt>
     P2 << "Using Rule 32" << endl;
     debug2 << lex->GetTokenName(token) <<" " << lex -> GetLexeme()<< endl;
     token = lex-> GetToken();
-
+    code += "listp (";
     errors += stmt();
+    code += ")";
     break;
 
+    //done
     case ZEROP_T: //33    <action> -> ZEROP_T <stmt>
     P2 << "Using Rule 33" << endl;
     debug2 << lex->GetTokenName(token) << " " << lex -> GetLexeme()<<endl;
     token = lex-> GetToken();
-
+    code += "zerop (";
     errors += stmt();
+    code += ")";
     break;
 
+    //done
     case NULLP_T://34    <action> -> NULLP_T <stmt>
     P2 << "Using Rule 34" << endl;
     debug2 << lex->GetTokenName(token) << " " << lex -> GetLexeme()<<endl;
     token = lex-> GetToken();
-
+    code += "nullp (";
     errors +=stmt();
+    code += ")";
     break;
 
+    //done
     case STRINGP_T://35    <action> -> STRINGP_T <stmt>
     P2 << "Using Rule 35" << endl;
     debug2 << lex->GetTokenName(token) << " " << lex -> GetLexeme()<<endl;
     token = lex-> GetToken();
-
+    code += "stringp (";
     errors += stmt();
+    code += ")";
     break;
 
-    //Written, needs testing
+    //done
     case PLUS_T: // 36    <action> -> PLUS_T <stmt_list>
     P2 << "Using Rule 36" << endl;
     op = " + ";
     debug2 << lex->GetTokenName(token) << " " << lex -> GetLexeme()<<endl;
     token = lex-> GetToken();
+    code += "(";
     errors += stmt_list();
+    code += ")";
     break;
 
-    //Written, needs testing
+    //done
     case MINUS_T: //37    <action> -> MINUS_T <stmt> <stmt_list>
     P2 << "Using Rule 37" << endl;
     debug2 << lex->GetTokenName(token) << " " << lex -> GetLexeme()<<endl;
     token = lex-> GetToken();
-
+    code += "(";
     errors+= stmt();
     code += " - ";
     errors += stmt_list();
+    code += ")";
     break;
 
-    //Written, needs testing
+    //done
     case DIV_T:// 38    <action> -> DIV_T <stmt> <stmt_list>
     P2 << "Using Rule 38" << endl;
     debug2 << lex->GetTokenName(token) << " " << lex -> GetLexeme()<<endl;
     token = lex-> GetToken();
-
+    code += "(";
     errors+= stmt();
-    code += " \\ ";
+    code += " / ";
     errors+=stmt_list();
+    code += ")";
     break;
 
-    //Written, needs testing
+    //done
     case MULT_T://39    <action> -> MULT_T <stmt_list>
     P2 << "Using Rule 39" << endl;
     debug2 << lex->GetTokenName(token) << " " << lex -> GetLexeme()<<endl;
     token = lex-> GetToken();
     op = " * ";
+    code += "(";
     errors += stmt_list();
+    code += ")";
     break;
 
-    //Written, needs testing
+    //done
     case MODULO_T:// 40    <action> -> MODULO_T <stmt> <stmt>
     P2 << "Using Rule 40" << endl;
     debug2 << lex->GetTokenName(token) << " " << lex -> GetLexeme()<<endl;
     token = lex-> GetToken();
-
+    code += "(";
     errors += stmt();
     code += " % ";
     errors += stmt();
+    code += ")";
     break;
 
+    //done
     case ROUND_T:// 41    <action> -> ROUND_T <stmt>
     P2  << "Using Rule 41" << endl;
     debug2 << lex->GetTokenName(token) << " " << lex -> GetLexeme()<<endl;
     token = lex-> GetToken();
-
+    code += "round (";
     errors += stmt();
+    code += ")";
     break;
 
     //Written, needs testing
@@ -853,6 +891,7 @@ int SyntacticalAnalyzer::action (){
     token = lex-> GetToken();
     op = " == ";
     errors += stmt_list();
+    op = "";
     break;
 
     //Written, needs testing
@@ -860,36 +899,41 @@ int SyntacticalAnalyzer::action (){
     P2 << "Using Rule 43" << endl;
     debug2 << lex->GetTokenName(token) << " " << lex -> GetLexeme()<<endl;
     token = lex-> GetToken();
-    op = ">= ";
+    op = "> ";
     errors += stmt_list();
     op = "";
-    code = "";
     break;
 
+    //need testing
     case LT_T:// 44    <action> -> LT_T <stmt_list>
     P2 << "Using Rule 44" << endl;
     debug2 << lex->GetTokenName(token) << " " << lex -> GetLexeme()<<endl;
     token = lex-> GetToken();
-
+    op = "< ";
     errors += stmt_list();
+    op = "";
     break;
 
+    //needs testing
     case GTE_T:// 45    <action> -> GTE_T <stmt_list>
     P2 << "Using Rule 45" << endl;
     debug2 << lex->GetTokenName(token) << " " << lex -> GetLexeme()<<endl;
     token = lex-> GetToken();
-
+    op = ">= ";
     errors += stmt_list();
+    op = "";
     break;
 
+    //needs testing
     case LTE_T:// 46    <action> -> LTE_T <stmt_list>
     P2 << "Using Rule 46" << endl;
     debug2 << lex->GetTokenName(token) << " " << lex -> GetLexeme()<<endl;
     token = lex-> GetToken();
-
+    op = "<= ";
     errors += stmt_list();
     break;
 
+    //done
     case IDENT_T:// 47    <action> -> IDENT_T <stmt_list>
     P2  << "Using Rule 47" << endl;
     debug2 << lex->GetTokenName(token) << " " << lex -> GetLexeme()<<endl;
@@ -901,6 +945,7 @@ int SyntacticalAnalyzer::action (){
     code = "";
     break;
 
+    //done
     case DISPLAY_T:// 48    <action> -> DISPLAY_T <stmt>
     P2 << "Using Rule 48" << endl;
     debug2 << lex->GetTokenName(token) << " " << lex -> GetLexeme()<<endl;
@@ -912,6 +957,7 @@ int SyntacticalAnalyzer::action (){
     code = "";
     break;
 
+    //done
     case NEWLINE_T:
     P2 << "Using Rule 49" << endl;
     debug2 << lex->GetTokenName(token) << " " << lex -> GetLexeme()<<endl;
@@ -1039,6 +1085,7 @@ int SyntacticalAnalyzer::any_other_token (){
 
     case LISTP_T://64    <any_other_token> -> LISTP_T
     P2 << "Using Rule 64" << endl;
+
     debug2 << lex->GetTokenName(token) << " " << lex -> GetLexeme()<<endl;
     token = lex->GetToken();
     break;
