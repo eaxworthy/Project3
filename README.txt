@@ -1,8 +1,9 @@
 /*******************************************************************************
 * File name: README.txt                                                          *
-* Project: CS 460 Project 2 Fall 2019                                          *
-* Author(s): Haley Psomas-Sheridan, Gleb Krunchinin, Alexandria Labossiere     *
-* Date: 11/29/19                                                               *
+* Project: CS 460 Project 3 Fall 2019                                          *
+* Author(s) of Project 2: Haley Psomas-Sheridan, Gleb Krunchinin, Alexandria Labossiere  *
+* Editors(s): Elizabeth Axworthy, Alexandria Labossiere, Roberto Rojas      *
+* Date: 12/13/19                                                               *
 * Description: This file contains README info                                  *
 *******************************************************************************/
 
@@ -11,7 +12,7 @@ This project outputs the original source code with lexical and syntactical
 error messages to a listing file <input_filename>.lst.
 This project outputs rest of output to a begugging file <input_filename>.dbg.
 
-The project is run using the make command and ./P2.out <input_filename>.ss
+The project is run using the make command and ./P3.out <input_filename>.ss
 The input file must have the extension '.ss'
 
-
+This program will convert the .ss file into a .cpp file and will also privide the equivalent expected output. 
