@@ -16,3 +16,10 @@ The project is run using the make command and ./P3.out <input_filename>.ss
 The input file must have the extension '.ss'
 
 This program will convert the .ss file into a .cpp file and will also privide the equivalent expected output. 
+
+An example of running this program would look like:
+          make
+          ./P3.out test.ss
+          
+          After running that, test.cpp, test.p1, test.p2, test.dgb, and test.lst will be created. 
+          When opening the test.cpp,  you will find that it is very similar if not the same as test.ss.
