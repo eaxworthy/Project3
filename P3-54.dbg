@@ -1,0 +1,150 @@
+DEFINE_T define
+DEFINE_T define
+LPAREN_T (
+IDENT_T function1
+IDENT_T V1
+IDENT_T V2
+RPAREN_T )
+RPAREN_T )
+LPAREN_T (
+COND_T cond
+LPAREN_T
+LPAREN_T (
+LT_T <
+IDENT_T V1
+IDENT_T V1
+IDENT_T V2
+IDENT_T V2
+LPAREN_T (
+LPAREN_T (
+DISPLAY_T display
+LPAREN_T (
+PLUS_T +
+IDENT_T V1
+IDENT_T V1
+IDENT_T V2
+IDENT_T V2
+RPAREN_T )
+RPAREN_T )
+LPAREN_T
+LPAREN_T
+LPAREN_T
+LPAREN_T (
+GT_T >
+IDENT_T V1
+IDENT_T V1
+IDENT_T V2
+IDENT_T V2
+LPAREN_T (
+LPAREN_T (
+DISPLAY_T display
+LPAREN_T (
+MINUS_T -
+IDENT_T V1
+IDENT_T V2
+IDENT_T V2
+RPAREN_T )
+RPAREN_T )
+LPAREN_T
+LPAREN_T
+LPAREN_T
+LPAREN_T (
+EQUALTO_T =
+IDENT_T V1
+IDENT_T V1
+IDENT_T V2
+IDENT_T V2
+LPAREN_T (
+LPAREN_T (
+DISPLAY_T display
+LPAREN_T (
+MULT_T *
+IDENT_T V1
+IDENT_T V1
+IDENT_T V2
+IDENT_T V2
+RPAREN_T )
+RPAREN_T )
+RPAREN_T
+RPAREN_T
+RPAREN_T )
+RPAREN_T )
+DEFINE_T define
+DEFINE_T define
+DEFINE_T define
+LPAREN_T (
+IDENT_T main
+RPAREN_T )
+RPAREN_T )
+LPAREN_T (
+IDENT_T function1
+NUMLIT_T 3
+NUMLIT_T 3
+NUMLIT_T 3
+NUMLIT_T 5
+NUMLIT_T 5
+NUMLIT_T 5
+LPAREN_T (
+LPAREN_T (
+LPAREN_T (
+NEWLINE_T newline
+LPAREN_T (
+LPAREN_T (
+LPAREN_T (
+IDENT_T function1
+NUMLIT_T 13
+NUMLIT_T 13
+NUMLIT_T 13
+NUMLIT_T 5
+NUMLIT_T 5
+NUMLIT_T 5
+LPAREN_T (
+LPAREN_T (
+LPAREN_T (
+NEWLINE_T newline
+RPAREN_T )
+RPAREN_T )
+LPAREN_T (
+IDENT_T main
+RPAREN_T )
+ )
+   6: 	)
+	RPAREN_T        )
+   7: )
+	RPAREN_T        )
+   8: 
+   9: (define (main)
+	LPAREN_T        (
+	DEFINE_T        define
+	LPAREN_T        (
+	IDENT_T         main
+	RPAREN_T        )
+  10: 	(function1 3 5)
+	LPAREN_T        (
+	IDENT_T         function1
+	NUMLIT_T        3
+	NUMLIT_T        5
+	RPAREN_T        )
+  11: 	(newline)
+	LPAREN_T        (
+	NEWLINE_T       newline
+	RPAREN_T        )
+  12: 	(function1 13 5)
+	LPAREN_T        (
+	IDENT_T         function1
+	NUMLIT_T        13
+	NUMLIT_T        5
+	RPAREN_T        )
+  13: 	(newline)
+	LPAREN_T        (
+	NEWLINE_T       newline
+	RPAREN_T        )
+  14: )
+	RPAREN_T        )
+  15: 
+  16: (main)
+	LPAREN_T        (
+	IDENT_T         main
+	RPAREN_T        )
+	EOF_T           
+0 errors found in input file

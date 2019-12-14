@@ -39,7 +39,7 @@ Object::Object (const string & value)
 		if (isdigit (value[i]))
 			num++;
 		else if (value[i] == '.')
-			dp++; 
+			dp++;
 	if (sgn + num + dp == value.size())
 		if (dp == 0)
 			*this = Object (atoi (value.c_str()));
@@ -115,7 +115,7 @@ bool Object::operator == (const Object & O) const
     catch (const char * message)
     {
 	cerr << "Wrong types for == operator: " << name << " and " << O.name
-	     << " (" << nameof[type] << " and " << nameof[O.type] << ")\n"; 
+	     << " (" << nameof[type] << " and " << nameof[O.type] << ")\n";
 	exit (1);
     }
 }
@@ -164,7 +164,7 @@ bool Object::operator != (const Object & O) const
     catch (const char * message)
     {
 	cerr << "Wrong types for != operator: " << name << " and " << O.name
-	     << " (" << nameof[type] << " and " << nameof[O.type] << ")\n"; 
+	     << " (" << nameof[type] << " and " << nameof[O.type] << ")\n";
 	exit (1);
     }
 }
@@ -200,7 +200,7 @@ bool Object::operator < (const Object & O) const
     catch (const char * message)
     {
 	cerr << "Wrong types for < operator: " << name << " and " << O.name
-	     << " (" << nameof[type] << " and " << nameof[O.type] << ")\n"; 
+	     << " (" << nameof[type] << " and " << nameof[O.type] << ")\n";
 	exit (1);
     }
 }
@@ -236,7 +236,7 @@ bool Object::operator <= (const Object & O) const
     catch (const char * message)
     {
 	cerr << "Wrong types for <= operator: " << name << " and " << O.name
-	     << " (" << nameof[type] << " and " << nameof[O.type] << ")\n"; 
+	     << " (" << nameof[type] << " and " << nameof[O.type] << ")\n";
 	exit (1);
     }
 }
@@ -272,7 +272,7 @@ bool Object::operator > (const Object & O) const
     catch (const char * message)
     {
 	cerr << "Wrong types for > operator: " << name << " and " << O.name
-	     << " (" << nameof[type] << " and " << nameof[O.type] << ")\n"; 
+	     << " (" << nameof[type] << " and " << nameof[O.type] << ")\n";
 	exit (1);
     }
 }
@@ -308,7 +308,7 @@ bool Object::operator >= (const Object & O) const
     catch (const char * message)
     {
 	cerr << "Wrong types for >= operator: " << name << " and " << O.name
-	     << " (" << nameof[type] << " and " << nameof[O.type] << ")\n"; 
+	     << " (" << nameof[type] << " and " << nameof[O.type] << ")\n";
 	exit (1);
     }
 }
@@ -356,7 +356,7 @@ Object Object::operator + (const Object & O) const
     catch (const char * message)
     {
 	cerr << "Wrong types for + operator: " << name << " and " << O.name
-	     << " (" << nameof[type] << " and " << nameof[O.type] << ")\n"; 
+	     << " (" << nameof[type] << " and " << nameof[O.type] << ")\n";
 	exit (1);
     }
 }
@@ -386,7 +386,7 @@ Object Object::operator - (const Object & O) const
     catch (const char * message)
     {
 	cerr << "Wrong types for - operator: " << name << " and " << O.name
-	     << " (" << nameof[type] << " and " << nameof[O.type] << ")\n"; 
+	     << " (" << nameof[type] << " and " << nameof[O.type] << ")\n";
 	exit (1);
     }
 }
@@ -416,7 +416,7 @@ Object Object::operator * (const Object & O) const
     catch (const char * message)
     {
 	cerr << "Wrong types for * operator: " << name << " and " << O.name
-	     << " (" << nameof[type] << " and " << nameof[O.type] << ")\n"; 
+	     << " (" << nameof[type] << " and " << nameof[O.type] << ")\n";
 	exit (1);
     }
 }
@@ -462,7 +462,7 @@ Object Object::operator / (const Object & O) const
     catch (const char * message)
     {
 	cerr << "Wrong types for / operator: " << name << " and " << O.name
-	     << " (" << nameof[type] << " and " << nameof[O.type] << ")\n"; 
+	     << " (" << nameof[type] << " and " << nameof[O.type] << ")\n";
 	exit (1);
     }
 }
@@ -482,33 +482,33 @@ Object Object::operator % (const Object & O) const
     catch (const char * message)
     {
 	cerr << "Wrong types for % operator: " << name << " and " << O.name
-	     << " (" << nameof[type] << " and " << nameof[O.type] << ")\n"; 
+	     << " (" << nameof[type] << " and " << nameof[O.type] << ")\n";
 	exit (1);
     }
 }
 
-bool numberp (const Object & O) 
+bool numberp (const Object & O)
 {
 	if (O.type == INT || O.type == REAL)
 		return true;
 	return false;
 }
 
-bool symbolp (const Object & O) 
+bool symbolp (const Object & O)
 {
 	if (O.type == STRING)
 		return true;
 	return false;
 }
 
-bool listp (const Object & O) 
+bool listp (const Object & O)
 {
 	if (O.type == LIST)
 		return true;
 	return false;
 }
 
-bool zerop (const Object & O) 
+bool zerop (const Object & O)
 {
     try
     {
@@ -527,14 +527,14 @@ bool zerop (const Object & O)
     }
 }
 
-bool nullp (const Object & O) 
+bool nullp (const Object & O)
 {
 	if (O.type == LIST && O.listval.size() == 0)
 		return true;
 	return false;
 }
 
-bool stringp (const Object & O) 
+bool stringp (const Object & O)
 {
 	if (O.type == STRING)
 		return true;
@@ -576,17 +576,17 @@ Object listop (const string & S, const Object & O)
 		return T;
 	}
 	debug << S << " : " << S[i] << endl;
-	throw "name";	
+	throw "name";
     }
     catch (const char * message)
     {
 	cerr << "Wrong " << message << " for list operation function: " << S;
 	if (message[0] == 't')
-		cerr << " (" << nameof[O.type]<< ")"; 
+		cerr << " (" << nameof[O.type]<< ")";
 	else if (message[0] == 's')
-		cerr << " (" << O.listval.size() << ")"; 
+		cerr << " (" << O.listval.size() << ")";
 	else if (message[0] == 'n')
-		cerr << " (list operator may need 2 parameters)"; 
+		cerr << " (list operator may need 2 parameters)";
 	cerr << endl;
 	exit (1);
     }
@@ -616,17 +616,17 @@ Object listop (const string & S, const Object & O1, const Object O2)
 		return T;
 	}
 	debug << S << endl;
-	throw "name";	
+	throw "name";
     }
     catch (const char * message)
     {
 	cerr << "Wrong " << message << " for list operation function: " << S;
 	if (message[0] == 't')
-		cerr << " (" << nameof[O1.type]<< " or " << nameof[O2.type]<< ")"; 
+		cerr << " (" << nameof[O1.type]<< " or " << nameof[O2.type]<< ")";
 	else if (message[0] == 's')
-		cerr << " (" << O1.listval.size() << " or " << O2.listval.size() << ")"; 
+		cerr << " (" << O1.listval.size() << " or " << O2.listval.size() << ")";
 	else if (message[0] == 'n')
-		cerr << " (list operator may accept only 1 parameter)"; 
+		cerr << " (list operator may accept only 1 parameter)";
 	cerr << endl;
 	exit (1);
     }
@@ -641,7 +641,7 @@ Object round (const Object & O)
 		r = O.intval;
 	else if (O.type == REAL)
 		r = O.realval + 0.5;
-	else 
+	else
 		throw "type";
 	return Object(r);
     }
@@ -649,7 +649,7 @@ Object round (const Object & O)
     {
 	cerr << "Wrong " << message << " for round function parameter: " << O.name;
 	if (message[0] == 't')
-		cerr << " (" << nameof[O.type]<< ")"; 
+		cerr << " (" << nameof[O.type]<< ")";
 	cerr << endl;
 	exit (1);
     }

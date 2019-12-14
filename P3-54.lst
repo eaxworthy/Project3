@@ -1,0 +1,18 @@
+Input file: P3-54.ss
+   1: (define (function1 V1 V2)
+   2: 	(cond 
+   3: 		((< V1 V2) (display (+ V1 V2)))
+   4: 		((> V1 V2) (display (- V1 V2)))
+   5: 		((= V1 V2) (display (* V1 V2)))
+   6: 	)
+   7: )
+   8: 
+   9: (define (main)
+  10: 	(function1 3 5)
+  11: 	(newline)
+  12: 	(function1 13 5)
+  13: 	(newline)
+  14: )
+  15: 
+  16: (main)
+0 errors found in input file

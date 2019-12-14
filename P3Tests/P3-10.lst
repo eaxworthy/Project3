@@ -1,0 +1,12 @@
+Input file: P3Tests/P3-10.ss
+   1: (define (main)
+   2: 	(display '(hello 12.3 append if display newline car define number? list? zero? null? string?))
+   3: 	(newline)
+   4: 	(display '(+ - / * modulo round = > < >= <= cond else))
+   5: 	(newline)
+   6: 	(display '(1 "Hello world" 2 'ac 3 '(and or not)))
+   7: 	(newline)
+   8: )
+   9: 
+  10: (main)
+0 errors found in input file
