@@ -1,9 +1,9 @@
 /*******************************************************************************
-* File name: README.txt                                                          *
-* Project: CS 460 Project 2 Fall 2019                                          *
-* Author(s): Haley Psomas-Sheridan, Gleb Krunchinin, Alexandria Labossiere     *
+* File name: README.txt                                                        *
+* Project: CS 460 Project 3 Fall 2019                                          *
+* Author(s): Elizabeth Axworthy, Alexandria Labossiere                         *
 * Date: 11/29/19                                                               *
-* Description: This file contains README info                                  *
+* Description: Scheme Interpreter and Compiler                                 *
 *******************************************************************************/
 
 This project outputs a list of rules used to <input_filename>.p2.
